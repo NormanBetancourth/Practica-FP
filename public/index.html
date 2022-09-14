@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!--
+* Fake page
+@author loricarlos@gmail.com
+@version demo
+-->
+<html>
+    <header>
+        <script type="module">
+            import {get_persons} from "./js/services.js" ;
+            // import {inyect_persons} from './js/index.js' ;
+            const PERSONS_TAG = 'persons'
+            const BUTTONS_TAG = 'button_persons'
+            const DEFAULT_URI = '/persons'
+            function view_persons(URI = DEFAULT_URI){
+                const persons_tag = document.getElementById(PERSONS_TAG)
+                // TODO:Preguntar si es lo más practico?
+                const tableBody = document.getElementById('table-body')
+                let content = ''
+                
+
+
+                get_persons(URI).then(persons =>  JSON.parse(persons))
+                                .then(persons => {
+                                    persons.forEach(element => {
+                                    console.log(element)
+                                    content += `<tr>
+                                                    <td>
+                                                        ${element.firstname}
+                                                    </td>
+                                                    <td>
+                                                        ${element.lastname}
+                                                    </td>
+                                                    <td>
+                                                        ${element.id}
+                                                    </td>
+                                                    <td>
+                                                        ${element.age}
+                                                    </td>
+                                                    <td>
+                                                        ${element.gender}
+                                                    </td>
+                                                </tr>`
+                                    
+                                                })
+                                    tableBody.innerHTML += content
+                                 })
+                                .catch( err => alert(err) )
+
+                                tableBody.innerHTML += content
+                
+            }
+            // Bind button
+            const button_tag = document.getElementById(BUTTONS_TAG)
+            button_tag.addEventListener('click', view_persons, false)
+        </script>
+        
+    </header>
+    <body>
+        <h1>Fake Index Page</h1>
+        <h2>Persons Application</h2>
+        <button id="button_persons">Click to view Persons</button>
+        <div id="idblock" name="idblock">
+            <label for="id">Id</label>
+            <input type="number" id="id" name="id" value="01" min="00" size="2" style="width: 2em;">
+        <div>
+        <div id="controls" name="controls">
+            <select name="genders" id="genders">
+                <option value="all">All</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            
+            <select name="age" id="age">
+                <option value="all">All</option>
+                <option value="child">Child(&lt; 11)</option>
+                <option value="teenager">Tenager(12-20)</option>
+                <option value="adult">Adult(21-64)</option>
+                <option value="senior">Senior(&gt; 64)</option>
+                
+            </select>
+            <div id="persons" name="persons"></div>
+        </div>
+
+        <!-- Tabla dinamica -->
+        <table >
+            <tbody id="table-body">
+                
+                <th>
+                    Name
+                </th>
+                <th>
+                    Lastname
+                </th>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Age
+                </th>
+                <th>
+                    Gender
+                </th>
+            </tbody>
+        </table>
+
+
+        <!-- fin Tabla dinamica -->
+
+    </body>
+</html>
