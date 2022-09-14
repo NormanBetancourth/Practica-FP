@@ -1,0 +1,15 @@
+{"persons":[
+    {    
+      "firstname": "John",
+      "lastname": "Doe",
+      "age": 56,
+      "gender": "M"
+    },
+    {    
+      "firstname": "Mary", 
+      "lastname": "Doe",
+      "age": 30,
+      "gender": "F"
+    }
+    ]
+}
