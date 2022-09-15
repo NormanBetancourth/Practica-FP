@@ -3,141 +3,121 @@
       "firstname": "John",
       "lastname": "Doe",
       "age": 56,
-      "gender": "M",
-      "id": 1
+      "gender": 2
     },
     {    
       "firstname": "Edwyn", 
       "lastname": "Hubble",
       "age": 24,
-      "gender": "M",
-      "id": 2
+      "gender": 2
     },
     {    
       "firstname": "Jane", 
       "lastname": "Doe",
       "age": 30,
-      "gender": "F",
-      "id": 3
+      "gender": 4
     },
     {    
       "firstname": "Marta", 
       "lastname": "Doe",
       "age": 30,
-      "gender": "F",
-      "id": 4
+      "gender": 4
     },
     {    
       "firstname": "Nicolas", 
       "lastname": "Copernico",
       "age": 30,
-      "gender": "F",
-      "id": 5
+      "gender": 4
     },
     {    
       "firstname": "Carl", 
       "lastname": "Sagan",
       "age": 21,
-      "gender": "M",
-      "id": 6
+      "gender": 2
     },
     {    
       "firstname": "Mary", 
       "lastname": "Doe",
       "age": 30,
-      "gender": "F",
-      "id": 7
+      "gender": 4
     },
     {    
       "firstname": "Alan", 
       "lastname": "Kay",
       "age": 10,
-      "gender": "M",
-      "id": 8
+      "gender": 2
     },
     {    
       "firstname": "Ada", 
       "lastname": "Lovelace",
       "age": 40,
-      "gender": "F",
-      "id": 9
+      "gender": 4
     },
     {    
       "firstname": "Edsger", 
       "lastname": "Dijkstra",
       "age": 70,
-      "gender": "M",
-      "id": 10
+      "gender": 2
     },
     {    
       "firstname": "Barbara", 
       "lastname": "Liskov",
       "age": 50,
-      "gender": "F",
-      "id": 11
+      "gender": 4
     },
     {    
       "firstname": "Mary", 
       "lastname": "Doe",
       "age": 30,
-      "gender": "F",
-      "id": 12
+      "gender": 4
     },
     {    
       "firstname": "Alan", 
       "lastname": "Turing",
       "age": 22,
-      "gender": "M",
-      "id": 13
+      "gender": 2
     },
     {    
       "firstname": "Guido", 
       "lastname": "Rossum",
       "age": 30,
-      "gender": "M",
-      "id": 14
+      "gender": 2
     },
     {    
       "firstname": "Marie", 
       "lastname": "Cuerie",
       "age": 30,
-      "gender": "F",
-      "id": 15
+      "gender": 4
     },
     {    
       "firstname": "Charles", 
       "lastname": "Darwin",
       "age": 60,
-      "gender": "M",
-      "id": 16
+      "gender": 2
     },
     {    
       "firstname": "James", 
       "lastname": "Doe",
       "age": 39,
-      "gender": "M",
-      "id": 17
+      "gender": 2
     },
     {    
       "firstname": "Brenda", 
       "lastname": "Smith",
       "age": 18,
-      "gender": "F",
-      "id": 18
+      "gender": 4
     },
     {    
       "firstname": "Jenna", 
       "lastname": "Doe",
       "age": 12,
-      "gender": "F",
-      "id": 19
+      "gender": 4
     },
     {    
       "firstname": "Carol",  
       "lastname": "Doe",
       "age": 67,
-      "gender": "F",
-      "id": 20
+      "gender": 4
     }
     ]
 }
