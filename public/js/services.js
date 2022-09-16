@@ -5,7 +5,10 @@
 
 */
 
-import personsJson from "./../../persons.json" assert { type: "json" };
+// import personsJson from "./../../persons.json" assert { type: "json" };
+
+const res = await fetch("./../../persons.json");
+let personsJson = await res.json();
 
 const Gender = {
   MALE: 2,
@@ -53,13 +56,8 @@ class Person {
     };
   }
 }
-// const persons=[
-//     new Person("John", "Doe", 56, Gender.MALE),
-//     new Person("Mary", "Doe", 30, Gender.FEMALE)
-// ]
 
-//TODO: preguntar al profe pq no se retorna new
-// console.log(new Person("John", "Doe", 56, Gender.MALE));
+
 const persons = personsJson.persons.map((person) => {
   return new Person(
     person.firstname,
@@ -70,35 +68,56 @@ const persons = personsJson.persons.map((person) => {
 });
 
 export function get_persons(url = "/person", delay = 3) {
-  let p = new Promise((then) =>
+  return new Promise((then) =>
     setTimeout(() =>
       then(JSON.stringify(persons.map((p) => p.toObj())), (delay % 1000) * 1000)
     )
   );
-  return p;
 }
 
-export function getPersonById(url = "/person", id, arr, delay = 3) {
-    let p = new Promise((then) =>
+function filterBuilder(tipo, p = {id: -1, firstname: '', lastname: '', age: 0, gender: 'M'} , querryOptions = {ageRange: {min:'ALL', max:'ALL'}, gender:'ALL'} ){
+
+
+  // x?.P 
+  switch(tipo){
+    case 'id':
+      return ((p) => id == '' ||  p.id == id);
+    case 'gender':
+      return ( (p, {gender}) => gender == p.gender);
+    case 'age':
+      return ((p, querryOptions) => p.age <= querryOptions.ageRange.max && p.age >= querryOptions.ageRange.min)
+
+  }
+ 
+
+
+}
+
+
+
+export function getPersonById(url = "/person", id, arr, delay = 0) {
+
+    return new Promise((then) =>
       setTimeout(() =>
-        then(JSON.stringify(arr.filter((p) => id == ''? true : p.id == id)), (delay % 1000) * 1000)
-      )
+        then(JSON.stringify(arr.filter(e => filterBuilder('id', e) ))), (delay % 1000) * 1000)
     );
-    return p;
 }
 
 
-//{queryOptions: {ageRange: {min:number, max:number}, gender:string}}
+
+
+
+
 export function getPersonsBySelection(url = "/person", querryOptions, delay = 3, arr) {
-    let p = new Promise((then) =>
-      setTimeout(() =>
-        then(JSON.stringify(arr.filter((p) => {
-            return querryOptions.gender == 'ALL'? true: (querryOptions.gender == p.gender)
-        })
-        .filter((p) => {return querryOptions.ageRange.min == 'ALL'? true: ( p.age <= querryOptions.ageRange.max && p.age >= querryOptions.ageRange.min)})
-       ), (delay % 1000) * 1000)
-      )
-    );
-    return p;
-}
+    
+  const filterGender = querryOptions.gender == 'ALL'? (() => true): filterBuilder('gender')
+  const filterAge = querryOptions.ageRange.min  == 'ALL'? (() => true): filterBuilder('age')
 
+  return new Promise((then) =>
+    setTimeout(() =>
+      then(JSON.stringify(arr.filter( p => filterGender(p, querryOptions))
+      .filter((p) => filterAge(p, querryOptions))
+      ), (delay % 1000) * 1000)
+    )
+  );
+}

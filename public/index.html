@@ -15,7 +15,6 @@
             const DEFAULT_URI = '/persons'
             function view_persons(URI = DEFAULT_URI){
                 const persons_tag = document.getElementById(PERSONS_TAG)
-                // TODO:Preguntar si es lo más practico?
                 const tableBody = document.getElementById('table-body')
                 tableBody.innerHTML = ''
                 let content = ''
@@ -56,6 +55,11 @@
                 
                 const querryOptions = {ageRange: {min:minAge, max:maxAge}, gender:genders}
                 console.log(querryOptions)
+
+
+
+                //if id != ''
+                //busca id
 
 
 
