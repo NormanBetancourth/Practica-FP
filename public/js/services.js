@@ -6,47 +6,49 @@
 */
 
 //Tools para filtros
-const not = f => p => !f(p)
-const True = () => true
-const False = not(True)
-const and2 = (f1, f2) => p => f1(p) && f2(p)
-const and = (...filters) => filters.reduce(and2, True)
-const or2 = (f1, f2) => p => f1(p) || f2(p)
-const or = (...filters) => filters.reduce(or2, filters.length > 0 ? False : True)
-
-
+const not = (f) => (p) => !f(p);
+const True = () => true;
+const False = not(True);
+const and2 = (f1, f2) => (p) => f1(p) && f2(p);
+const and = (...filters) => filters.reduce(and2, True);
+const or2 = (f1, f2) => (p) => f1(p) || f2(p);
+const or = (...filters) =>
+  filters.reduce(or2, filters.length > 0 ? False : True);
 
 //Filtros custom
-const filtros = new Map()
+const filtros = new Map();
 
-const male = p => p?.gender === 'M'
-const female = not(male)
+//gender
+const male = (p) => p?.gender === "M";
+const female = not(male);
 
-const child = p => p?.age >= 1 && p?.age == 11
-const teenager = p => p?.age >= 12 && p?.age <= 20
-const adult = p => p?.age >= 21 && p?.age <= 64
-const senior = p => p?.age > 64
-const idIs = (p, id) => p?.id == id || id === ''
-const all = () => true
+//age
+const child = (p) => p?.age >= 1 && p?.age == 11;
+const teenager = (p) => p?.age >= 12 && p?.age <= 20;
+const adult = (p) => p?.age >= 21 && p?.age <= 64;
+const senior = (p) => p?.age > 64;
+const idIs = (p, id) => p?.id == id || id === "";
 
+// //all
+// const all = () => true
 
-filtros.set('male', male)
-filtros.set('female', female)
-filtros.set('child', child)
-filtros.set('teenager', teenager)
-filtros.set('adult', adult)
-filtros.set('senior', senior)
-filtros.set('id', idIs)
-filtros.set('all', all)
+filtros.set("male", male);
+filtros.set("female", female);
+filtros.set("child", child);
+filtros.set("teenager", teenager);
+filtros.set("adult", adult);
+filtros.set("senior", senior);
+filtros.set("id", idIs);
+filtros.set("all", True);
 
-function filterBuilder(tipo){
-  return filtros.get(tipo)
+function filterBuilder(tipo) {
+  try {
+    return filtros.get(tipo);  
+  } catch (error) {
+    return filtros.get('all');
+  }
+  
 }
-
-
-// function andBuilder(options){
-//   return and([filterBuilder()])
-// }
 
 const res = await fetch("./../../persons.json");
 let personsJson = await res.json();
@@ -98,7 +100,6 @@ class Person {
   }
 }
 
-
 const persons = personsJson.persons.map((person) => {
   return new Person(
     person.firstname,
@@ -108,19 +109,23 @@ const persons = personsJson.persons.map((person) => {
   );
 });
 
-
 export function get_persons(url = "/person", delay = 0, options = {}) {
-  const age = filterBuilder(options.age)
-  const gender =  filterBuilder(options.gender)
-  const id = filterBuilder('id')
-
+  //opciones para los filtros, usa MAP con los filtros
+  const age = filterBuilder(options.age);
+  const gender = filterBuilder(options.gender);
+  const id = filterBuilder("id");
 
   return new Promise((then) =>
     setTimeout(() =>
-      then(JSON.stringify(
-        persons.map((p) => p.toObj()).filter( and(age, gender) ).filter(e =>  id(e, options.id))
-        
-        ), (delay % 1000) * 1000)
+      then(
+        JSON.stringify(
+          persons
+            .map((p) => p.toObj())
+            .filter(and(age, gender))
+            .filter((e) => id(e, options.id))
+        ),
+        (delay % 1000) * 1000
+      )
     )
   );
 }
