@@ -5,7 +5,30 @@
 
 */
 
-// import personsJson from "./../../persons.json" assert { type: "json" };
+//Tools para filtros
+//Tools para filtros
+const not = f => p => !f(p)
+const True = () => true
+const False = not(True)
+const and2 = (f1, f2) => p => f1(p) && f2(p)
+const and = (...filters) => filters.reduce(and2, True)
+const or2 = (f1, f2) => p => f1(p) || f2(p)
+const or = (...filters) => filters.reduce(or2, filters.length > 0 ? False : True)
+
+
+
+//Filtros planos
+
+const male = p => p?.gender === 'M'
+const female = not(male)
+
+const child = p => p?.age >= 18
+const tenager = p => p?.age >= 18
+const adult = p => p?.age >= 18
+const senior = p => p?.age >= 18
+
+const startsLetterS = p => p?.firstname.startsWith('S')
+
 
 const res = await fetch("./../../persons.json");
 let personsJson = await res.json();
@@ -67,7 +90,7 @@ const persons = personsJson.persons.map((person) => {
   );
 });
 
-export function get_persons(url = "/person", delay = 3) {
+export function get_persons(url = "/person", delay = 0) {
   return new Promise((then) =>
     setTimeout(() =>
       then(JSON.stringify(persons.map((p) => p.toObj())), (delay % 1000) * 1000)
@@ -75,17 +98,17 @@ export function get_persons(url = "/person", delay = 3) {
   );
 }
 
-function filterBuilder(tipo, p = {id: -1, firstname: '', lastname: '', age: 0, gender: 'M'} , querryOptions = {ageRange: {min:'ALL', max:'ALL'}, gender:'ALL'} ){
+function filterBuilder(tipo, p = {id: -1, firstname: '', lastname: '', age: 0, gender: 'M'}){
 
 
   // x?.P 
   switch(tipo){
     case 'id':
-      return ((p) => id == '' ||  p.id == id);
+      return ((p, id) => id == '' ||  p?.id == id);
     case 'gender':
-      return ( (p, {gender}) => gender == p.gender);
+      return ( (p, {gender}) => gender == p?.gender);
     case 'age':
-      return ((p, querryOptions) => p.age <= querryOptions.ageRange.max && p.age >= querryOptions.ageRange.min)
+      return (({age}, {ageRange}) => age <= ageRange?.max && age >= ageRange?.min)
 
   }
  
@@ -93,22 +116,24 @@ function filterBuilder(tipo, p = {id: -1, firstname: '', lastname: '', age: 0, g
 
 }
 
+// console.log('>>>1',persons.filter(and(male,adult,startsWithLetterS)))
+// console.log('>>>2',persons.filter(and(adult,startsWithLetterS)))
+// console.log('>>>3',persons.filter(and()))
+// console.log('>>>4',persons.filter(or2(male,startsWithLetterS)))
+// console.log('>>>5',persons.filter(or(male,startsWithLetterJ, startsWithLetterS)))
+// console.log('>>>6',persons.filter(or()))
 
 
 export function getPersonById(url = "/person", id, arr, delay = 0) {
 
     return new Promise((then) =>
       setTimeout(() =>
-        then(JSON.stringify(arr.filter(e => filterBuilder('id', e) ))), (delay % 1000) * 1000)
+        then(JSON.stringify(arr.filter(e => filterBuilder('id')(e, id)))), (delay % 1000) * 1000)
     );
 }
 
 
-
-
-
-
-export function getPersonsBySelection(url = "/person", querryOptions, delay = 3, arr) {
+export function getPersonsBySelection(url = "/person", querryOptions, delay = 0, arr) {
     
   const filterGender = querryOptions.gender == 'ALL'? (() => true): filterBuilder('gender')
   const filterAge = querryOptions.ageRange.min  == 'ALL'? (() => true): filterBuilder('age')
