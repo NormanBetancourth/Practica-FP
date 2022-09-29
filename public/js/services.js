@@ -23,11 +23,11 @@ const male = (p) => p?.gender === "M";
 const female = not(male);
 
 //age
-const child = (p) => p?.age >= 1 && p?.age == 11;
+const child = (p) => p?.age >= 1 && p?.age <= 11;
 const teenager = (p) => p?.age >= 12 && p?.age <= 20;
 const adult = (p) => p?.age >= 21 && p?.age <= 64;
 const senior = (p) => p?.age > 64;
-const idIs = (p, id) => p?.id == id || id === "";
+const idIs = id => p => id === "" || p?.id == id ;
 
 // //all
 // const all = () => true
@@ -100,7 +100,7 @@ class Person {
   }
 }
 
-const persons = personsJson.persons.map((person) => {
+const personsData = personsJson.persons.map((person) => {
   return new Person(
     person.firstname,
     person.lastname,
@@ -109,20 +109,21 @@ const persons = personsJson.persons.map((person) => {
   );
 });
 
+const persons = personsData.map((p) => p.toObj())
+
 export function get_persons(url = "/person", delay = 0, options = {}) {
   //opciones para los filtros, usa MAP con los filtros
   const age = filterBuilder(options.age);
   const gender = filterBuilder(options.gender);
   const id = filterBuilder("id");
 
+  console.log(id)
+
   return new Promise((then) =>
     setTimeout(() =>
       then(
         JSON.stringify(
-          persons
-            .map((p) => p.toObj())
-            .filter(and(age, gender))
-            .filter((e) => id(e, options.id))
+          persons.filter(and(age, gender, id(options.id)))
         ),
         (delay % 1000) * 1000
       )
