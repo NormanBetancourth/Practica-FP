@@ -111,6 +111,8 @@ const personsData = personsJson.persons.map((person) => {
 
 const persons = personsData.map((p) => p.toObj())
 
+const delayFunction = d => d % 1000 * 1000
+
 export function get_persons(url = "/person", delay = 0, options = {}) {
   //opciones para los filtros, usa MAP con los filtros
   const age = filterBuilder(options.age);
@@ -125,7 +127,7 @@ export function get_persons(url = "/person", delay = 0, options = {}) {
         JSON.stringify(
           persons.filter(and(age, gender, id(options.id)))
         ),
-        (delay % 1000) * 1000
+        delayFunction(delay)
       )
     )
   );
